@@ -1,5 +1,5 @@
 pipeline {
-    agent any
+   agent { label 'slave' }
 
     environment {
         JAVA_HOME = '/usr/lib/jvm/java-17-openjdk-amd64'
@@ -53,6 +53,7 @@ pipeline {
                 // Fetch the public IP and display the access URL
                 script {
                     def publicIp = sh(script: "curl -s https://checkip.amazonaws.com", returnStdout: true).trim()
+                    
                     echo "The application is running and accessible at: http://${publicIp}:8080"
                 }
             }
