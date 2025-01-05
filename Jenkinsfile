@@ -12,57 +12,71 @@ pipeline {
     stages {
         stage('Checkout Code') {
             steps {
-                checkoutCode()
+                script {
+				newjenkins.check_out()
             }
+		      }
         }
 
-        stage('Set up Java 17') {
+          stage('Set up Java') {
             steps {
-                setupJava()
-            }
+                script {
+				newjenkins.setup_java()
+            		}	
+		}
         }
-
-        stage('Set up Maven') {
+        
+          stage('Set up Maven') {
             steps {
-                setupMaven()
-            }
+                script {
+				  newjenkins.setup_maven()
+            		}
+	    }
         }
 
-        stage('Build with Maven') {
+       
+          stage('Building Project') {
             steps {
-                buildProject()
-            }
+                script {
+				  newjenkins.build_project()
+       			}
+		}
         }
 
-        stage('Upload Artifact') {
+          stage('Upload Artifact') {
             steps {
                 echo 'Uploading artifact...'
                 archiveArtifacts artifacts: 'target/simple-parcel-service-app-1.0-SNAPSHOT.jar', allowEmptyArchive: true
             }
         }
 
-        stage('Run Application') {
+          stage('Run Application') {
             steps {
-                runApplication()
-            }
+                script {
+				  newjenkins.run_application()
+            		}
+		}
         }
 
-        stage('Validate App is Running') {
+          stage('Validating Application') {
             steps {
-                validateApp()
-            }
+                script {
+				  newjenkins.validate_app()
+            		}
+		}
         }
 
-        stage('Gracefully Stop Spring Boot App') {
+          stage('Gracefully Stop Spring Boot App') {
             steps {
-                stopApplication()
+                script {
+				  newjenkins.graceful_stop()
             }
+		      }
         }
     }
-
     post {
         always {
             cleanup()
         }
     }
-}
+  }
